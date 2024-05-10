@@ -1,12 +1,13 @@
 const router = require("express").Router(); // Use Express routing
 const pool = require("../db"); // Take the exported pool object in
 const bcrypt = require("bcrypt"); // Need this to hash passwords
+const jwtGenerator = require("../utils/jwtGenerator.js"); // Use this to generate jwt tokens
 
 module.exports = router;
 
 // Authentication = Verify user credentials and identity, authorization determines access rights
 
-// registering route
+// REGISTER route
 router.post("/register", async (req, res) => {
     try {
         // 1. Destructure the req.body (name, email, password)
@@ -34,10 +35,46 @@ router.post("/register", async (req, res) => {
             [name, email, bcryptPassword] // Return the new user too to confirm
         );
 
-        res.json(newUser.rows[0]);
-        // 5. GEenrating jwt token
+        // 5. Generating jwt token
+
+        const token = jwtGenerator(newUser.rows[0].user_id);
+
+        res.json({ token }); // Put the token as a json into the res to be sent back
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server error"); // Server error of status code 500 if something goes wrong
+    }
+});
+
+// LOGIN route
+router.post("/login", async (req, res) => {
+    try {
+        // 1. Destructure req.body
+        const { name, email, password } = req.body;
+
+        // 2. Check if user doesn't exist (if not then throw error)
+
+        const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
+            email,
+        ]);
+
+        if (user.rows.length == 0) {
+            return res.status(401).json("Password or Email is incorrect"); // Unauthenticated
+        }
+        // 3. Check if incoming password is the same as the database password
+
+        const validPassword = await bcrypt.compare(password, user.rows[0].user_password); // Compare if the encrypted passwords are the same
+        console.log(validPassword);
+
+        if (!validPassword) {
+            return res.status(401).json("Password or Email is incorrect"); // Password hashes didn't match
+        }
+        // 4. Give them a jwt token
+        const token = jwtGenerator(user.rows[0].user_id);
+
+        res.json({ token }); // Put the token as a json into the res to be sent back
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
     }
 });
