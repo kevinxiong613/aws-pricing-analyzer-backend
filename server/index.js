@@ -11,6 +11,9 @@ app.use(cors()); // Declare cors middleware, CORS defines a way for client web a
 // register and login routes, want to hit at /auth
 app.use("/auth", require("./routes/jwtAuth"));
 
+// dashboard routes
+app.use("/dashboard", require("./routes/dashboard"));
+
 app.listen(5001, () => {
     console.log("app is running!");
 });

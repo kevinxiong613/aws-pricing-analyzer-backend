@@ -9,10 +9,11 @@ module.exports = async (req, res, next) => {
             return res.status(403).json("Not authorized");
         }
 
-        const payload = jwt.verify(jwtToken, process.env.JWT_SECRET); // If it's verified, will return a payload that can be used in routes
+        const payload = jwt.verify(jwtToken, process.env.JWT_SECRET); // If it's verified, will return a payload that can be used in routes (it's the user_id)
 
         req.user = payload.user;
-    } catch (error) {
+        next(); // Continue with the rest of the route that this was passed into
+    } catch (err) {
         console.error(err.message);
         return res.status(403).json("Not authorized"); // 403 used for authorization issues
     }

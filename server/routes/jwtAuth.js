@@ -2,9 +2,8 @@ const router = require("express").Router(); // Use Express routing
 const pool = require("../db"); // Take the exported pool object in
 const bcrypt = require("bcrypt"); // Need this to hash passwords
 const jwtGenerator = require("../utils/jwtGenerator.js"); // Use this to generate jwt tokens
-const validInfo = require("../middleware/validInfo"); // Need the function to check if inputted info is valid or not
-
-module.exports = router;
+const validInfo = require("../middleware/validInfo"); // Need the FUNCTION to check if inputted info is valid or not
+const authorization = require("../middleware/authorization"); // Need the FUNCTION to check if user is authorized
 
 // Authentication = Verify user credentials and identity, authorization determines access rights
 
@@ -79,3 +78,14 @@ router.post("/login", validInfo, async (req, res) => {
         res.status(500).send("Server error");
     }
 });
+
+router.get("/is-verify", authorization, async (req, res) => {
+    try {
+        res.json(true); // Just return true here since authorization middleware checks that the user is authorized
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+module.exports = router;
