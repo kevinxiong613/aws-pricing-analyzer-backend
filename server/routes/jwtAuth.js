@@ -2,16 +2,17 @@ const router = require("express").Router(); // Use Express routing
 const pool = require("../db"); // Take the exported pool object in
 const bcrypt = require("bcrypt"); // Need this to hash passwords
 const jwtGenerator = require("../utils/jwtGenerator.js"); // Use this to generate jwt tokens
+const validInfo = require("../middleware/validInfo"); // Need the function to check if inputted info is valid or not
 
 module.exports = router;
 
 // Authentication = Verify user credentials and identity, authorization determines access rights
 
 // REGISTER route
-router.post("/register", async (req, res) => {
+router.post("/register", validInfo, async (req, res) => {
     try {
         // 1. Destructure the req.body (name, email, password)
-        const { name, email, password } = req.body; // Same thing as python x1, x2 = list_with_two_items
+        const { name, email, password } = req.body; // Same thing as python x1, x2 = list_with_two_items, but variables correctly assigned based off the object
 
         // 2. Check if user exist (if user exists then throw error)
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
@@ -47,7 +48,7 @@ router.post("/register", async (req, res) => {
 });
 
 // LOGIN route
-router.post("/login", async (req, res) => {
+router.post("/login", validInfo, async (req, res) => {
     try {
         // 1. Destructure req.body
         const { name, email, password } = req.body;
