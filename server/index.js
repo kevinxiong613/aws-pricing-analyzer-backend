@@ -8,8 +8,8 @@ app.use(express.json()); // Be able to access req.body
 app.use(cors()); // Declare cors middleware, CORS defines a way for client web applications that are loaded in one domain to interact with resources in a different domain.
 
 // ROUTES
-// register and login routes, want to hit at /auth
-app.use("/auth", require("./routes/jwtAuth"));
+// register and login routes, want to hit at /authentication
+app.use("/authentication", require("./routes/jwtAuth"));
 
 // dashboard routes
 app.use("/dashboard", require("./routes/dashboard"));

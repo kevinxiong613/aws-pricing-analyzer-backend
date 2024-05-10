@@ -7,8 +7,8 @@ const authorization = require("../middleware/authorization"); // Need the FUNCTI
 
 // Authentication = Verify user credentials and identity, authorization determines access rights
 
-// REGISTER route
-router.post("/register", validInfo, async (req, res) => {
+// sign-up route
+router.post("/sign-up", validInfo, async (req, res) => {
     try {
         // 1. Destructure the req.body (name, email, password)
         const { name, email, password } = req.body; // Same thing as python x1, x2 = list_with_two_items, but variables correctly assigned based off the object
@@ -79,7 +79,7 @@ router.post("/login", validInfo, async (req, res) => {
     }
 });
 
-router.get("/is-verify", authorization, async (req, res) => {
+router.get("/verify", authorization, async (req, res) => {
     try {
         res.json(true); // Just return true here since authorization middleware checks that the user is authorized
     } catch (err) {
