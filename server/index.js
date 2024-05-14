@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // middleware
 
@@ -10,6 +11,7 @@ app.use(cors()); // Declare cors middleware, CORS defines a way for client web a
 // ROUTES
 // register and login routes, want to hit at /authentication
 app.use("/authentication", require("./routes/jwtAuth"));
+app.use(cookieParser());
 
 // dashboard routes
 app.use("/dashboard", require("./routes/dashboard"));
