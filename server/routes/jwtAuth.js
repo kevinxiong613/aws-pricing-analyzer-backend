@@ -38,8 +38,6 @@ router.post("/signup", validInfo, async (req, res) => {
         // 5. Generating jwt token
 
         const token = jwtGenerator(newUser.rows[0].user_id);
-
-        res.cookie("jwt", token, { httpOnly: true });
         res.json({ token }); // Put the token as a json into the res to be sent back
     } catch (err) {
         console.error(err.message);
@@ -73,7 +71,6 @@ router.post("/login", validInfo, async (req, res) => {
         // 4. Give them a jwt token
         const token = jwtGenerator(user.rows[0].user_id);
 
-        res.cookie("jwt", token, { httpOnly: true });
         res.json({ token }); // Put the token as a json into the res to be sent back
     } catch (err) {
         console.error(err.message);
