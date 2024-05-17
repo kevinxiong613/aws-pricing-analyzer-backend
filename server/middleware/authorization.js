@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
         req.user = payload.user;
         next(); // Continue with the rest of the route that this was passed into
     } catch (err) {
-        console.error(err.message);
+        console.error(err.message + " authorization has failed!");
         return res.status(403).json("Not authorized"); // 403 used for authorization issues
     }
 };
