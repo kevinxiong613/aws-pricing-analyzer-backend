@@ -6,7 +6,7 @@ function jwtGenerator(user_id) {
         user: user_id,
     };
     // jwt basically creates a hash signature with both the payload and jwt_secret, so if you don't know the secret then you can't fake a token
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1hr" }); // We want it to expire in one hour
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "216000" }); // Expire in one hour (for some reason 60 * 60 = 3600 was one minute)
 }
 
 module.exports = jwtGenerator;
