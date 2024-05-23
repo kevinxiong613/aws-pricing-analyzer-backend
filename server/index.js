@@ -16,11 +16,11 @@ app.use(
 // register and login routes, want to hit at /authentication
 app.use("/authentication", require("./routes/jwtAuth"));
 
-// dashboard routes
-app.use("/dashboard", require("./routes/dashboard"));
-
 // gemini routes
-app.use("/recipes", require("./routes/gemini"));
+app.use("/generate", require("./routes/gemini"));
+
+// saving and loading recipes routes
+app.use("/recipes", require("./routes/recipe"));
 
 app.listen(5001, () => {
     console.log("app is running!");
