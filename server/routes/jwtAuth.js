@@ -38,7 +38,7 @@ router.post("/signup", validInfo, async (req, res) => {
         // 5. Generating jwt token
 
         const token = jwtGenerator(newUser.rows[0].user_id);
-        res.json({ token: token, user_id: newUser.rows[0].user_id }); // Put the token as a json into the res to be sent back
+        res.json({ token: token, user_id: newUser.rows[0].user_id }); // Put the token as a json into the res to be sent back, and send user_id to later query their recipes
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server error"); // Server error of status code 500 if something goes wrong
