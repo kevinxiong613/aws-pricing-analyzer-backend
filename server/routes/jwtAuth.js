@@ -41,7 +41,7 @@ router.post("/signup", validInfo, async (req, res) => {
         res.json({ token: token, user_id: newUser.rows[0].user_id }); // Put the token as a json into the res to be sent back, and send user_id to later query their recipes
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error"); // Server error of status code 500 if something goes wrong
+        return res.status(500).send("Server error"); // Server error of status code 500 if something goes wrong
     }
 });
 
@@ -74,7 +74,7 @@ router.post("/login", validInfo, async (req, res) => {
         res.json({ token: token, user_id: user.rows[0].user_id }); // Put the token and user_id as a json into the res to be sent back
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        return res.status(500).send("Server error");
     }
 });
 
@@ -83,7 +83,7 @@ router.get("/verify", authorization, async (req, res) => {
         res.json(true); // Just return true here since authorization middleware checks that the user is authorized
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        return res.status(500).send("Server error");
     }
 });
 

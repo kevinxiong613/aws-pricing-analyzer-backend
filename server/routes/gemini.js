@@ -16,7 +16,7 @@ router.get("/verifyIngredients", async (req, res) => {
         res.json({ text });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Verifying ingredients wasn't successful");
+        return res.status(500).send("Verifying ingredients wasn't successful");
     }
 });
 
@@ -58,7 +58,7 @@ router.get("/getRecipe", async (req, res) => {
         res.json(jsonObject); // Send the json to the client
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Fetching recipes wasn't successful");
+        return res.status(500).send("Fetching recipes wasn't successful");
     }
 });
 module.exports = router;

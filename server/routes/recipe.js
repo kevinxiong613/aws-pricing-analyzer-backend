@@ -14,7 +14,7 @@ router.post("/saveRecipe", async (req, res) => {
             [user_id, title]
         );
         if (existing.rows.length != 0) {
-            res.status(401).send("Recipe already exists for this user.");
+            return res.status(401).send("Recipe already exists for this user.");
         }
 
         // Enter the new recipe inside the database
@@ -25,31 +25,23 @@ router.post("/saveRecipe", async (req, res) => {
         res.json({ newUser });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Failed to save recipe.");
+        return res.status(500).send("Failed to save recipe.");
     }
 });
 
 router.get("/getUserRecipes", async (req, res) => {
     try {
-        const email = req.header("token");
+        const user_id = req.header("user_id");
 
-        const existing = await pool.query(
-            "SELECT * FROM recipes WHERE user_email = $1 AND title = $2",
-            [email, title]
-        );
-        if (existing.rows.length != 0) {
-            res.status(401).send("Recipe already exists for this user.");
-        }
+        const recipes = await pool.query("SELECT * FROM recipes WHERE user_id = $1", [
+            user_id,
+        ]);
 
-        // Enter the new recipe inside the database
-        const newUser = await pool.query(
-            "INSERT INTO recipes (title, ingredients, instructions, user_email) VALUES ($1, $2, $3, $4) RETURNING *",
-            [title, ingredients, instructions, email]
-        );
-        res.json({ newUser });
+        // Send the recipes back as a json
+        res.json({ recipes: recipes.rows });
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Failed to save recipe.");
+        return res.status(500).send("Failed to retrieve recipes.");
     }
 });
 
