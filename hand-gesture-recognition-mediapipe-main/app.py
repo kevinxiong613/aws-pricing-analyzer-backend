@@ -394,11 +394,12 @@ def draw_info(image, fps, mode, number):
     return image
 
 async def send_data(data):
-    uri = "ws://localhost:8765"  # Change the URI to match your server's WebSocket endpoint
+    uri = "ws://localhost:5002"  # Change the URI to match your server's WebSocket endpoint
     async with websockets.connect(uri) as websocket:
         await websocket.send(data)
 
 def main():
+
     # Argument parsing #################################################################
     args = get_args()
 
@@ -488,7 +489,7 @@ def main():
                 # Hand sign classification
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
                 print("Hand sign id", hand_sign_id)
-                # asyncio.run(send_data(hand_sign_id))
+                asyncio.run(send_data(hand_sign_id))
 
         else:
             point_history.append([0, 0])
