@@ -1,2 +1,7 @@
 node_modules
 .env
+getkey.py
+__pycache__
+gesture_data
+keypoint_classifier_label.csv
+keypoint_classifier.hdf5
